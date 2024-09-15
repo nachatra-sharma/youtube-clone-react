@@ -16,13 +16,17 @@ const WatchPage = () => {
       dispatch(toggleMenu());
     };
   }, []);
+  const [searchParams] = useSearchParams();
   const fetchData = async () => {
-    const data = await fetch(SINGLE_YOUTUBE_VIDEO_API);
+    const data = await fetch(
+      SINGLE_YOUTUBE_VIDEO_API.replace("Ks-_Mh1QhMc", searchParams.get("v"))
+    );
     const json = await data.json();
+    console.log(json.items[0]);
     setVideo(json.items[0]);
   };
-  const [searchParams] = useSearchParams();
 
+  console.log(searchParams);
   return (
     <div className="flex flex-col">
       <VideoPlayer data={video} id={searchParams.get("v")} />

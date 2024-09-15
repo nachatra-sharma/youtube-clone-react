@@ -19,7 +19,7 @@ const VideoContainer = () => {
   const shimmerLength = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 11, 12];
   return (
     <div className="flex justify-between flex-wrap py-4 pt-12 lg:pt-[7rem]">
-      {video.length === 0
+      {video?.length === 0
         ? shimmerLength.map((index) => <Shimmer key={index} />)
         : video?.map((items) => (
             <Link

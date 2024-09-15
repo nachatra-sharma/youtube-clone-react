@@ -57,10 +57,10 @@ const SearchResult = () => {
                 key={index}
                 to={`/watch?v=${index !== 0 && result?.id?.videoId}`}
               >
-                <div className="flex flex-col lg:flex-row gap-2 lg:gap-5 w-[95%] mb-5">
+                <div className="flex flex-col lg:flex-row gap-2 lg:gap-5 w-full mb-5">
                   <div>
                     <img
-                      className="rounded-md  max-w-[330px] lg:max-w-[400px]"
+                      className="rounded-md  max-w-full"
                       src={
                         index !== 0 && result?.snippet?.thumbnails?.high?.url
                       }
@@ -81,7 +81,6 @@ const SearchResult = () => {
                       </span>
                     </div>
                     <p className="text-gray-500 text-xs lg:text-lg leading-6 lg:leading-8">
-                      {/* {index !== 0 && result?.snippet?.description} */}
                       {window.innerWidth > 800
                         ? truncateString(
                             index !== 0 && result?.snippet?.description

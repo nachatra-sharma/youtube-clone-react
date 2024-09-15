@@ -1,13 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { closeSearch, toggleMenu, toggleSearch } from "../utils/appSlice";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+
 const Header = () => {
-  const isOpen = useSelector((store) => store.app.isSearchOpen);
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState([]);
+  const location = useLocation();
+  const searchInputRef = useRef(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (location.pathname === "/") {
+      setSearchQuery("");
+    }
+    if (searchInputRef.current) {
+      searchInputRef.current.blur();
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     dispatch(closeSearch());
@@ -23,12 +35,16 @@ const Header = () => {
     };
   }, [searchQuery]);
   async function getSearchSuggestions() {
-    const response = await fetch(
-      "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=" +
-        searchQuery
-    );
-    const data = await response.json();
-    setSearchSuggestions(data[1]);
+    try {
+      const response = await fetch(
+        "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=" +
+          searchQuery
+      );
+      const data = await response.json();
+      setSearchSuggestions(data[1]);
+    } catch (error) {
+      console.log(error);
+    }
   }
   const dispatch = useDispatch();
   const toggleMenuHandler = () => {
@@ -38,22 +54,26 @@ const Header = () => {
   return (
     <div className="flex items-center w-[100%] px-2 lg:px-5 py-1 bg-white fixed justify-between z-30">
       <div className="flex items-center gap-6">
+        {/* sidebar tab for desktop */}
         <div className="lg:block hidden">
           <i
             className="fa-solid fa-bars hidden lg:block text-xl cursor-pointer"
             onClick={() => toggleMenuHandler()}
           ></i>
         </div>
+        {/* logo for both */}
         <img
-          className="w-[150px] lg:w-32 cursor-pointer"
+          className="w-[120px] lg:w-32 cursor-pointer"
           src="https://t3.ftcdn.net/jpg/03/00/38/90/360_F_300389025_b5hgHpjDprTySl8loTqJRMipySb1rO0I.jpg"
           alt="youtube-logo"
         />
       </div>
+      {/* search for desktop */}
       <div className="w-[50%] lg:flex items-center hidden">
         <div className="w-[90%]">
           <input
             type="text"
+            ref={searchInputRef}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search"
@@ -71,7 +91,7 @@ const Header = () => {
             <i className="fa fa-search"></i>
           </button>
         </div>
-        {isOpen && searchSuggestions.length !== 0 && (
+        {location.pathname === "/" && searchSuggestions.length !== 0 && (
           <div className="shadow-lg fixed bg-white w-[40%] top-16 rounded-xl">
             <ul className="p-5 flex flex-col gap-3 ">
               {searchSuggestions.map((suggestion, index) => (
@@ -95,23 +115,26 @@ const Header = () => {
           <i className="fa-solid fa-microphone rounded-full px-[13px] py-[10px] bg-gray-200"></i>
         </div>
       </div>
+      {/* side font awesome for desktop */}
       <div className="lg:flex gap-8 items-center hidden">
         <i className="cursor-pointer fa fa-video-camera"></i>
         <i className="cursor-pointer fa-solid fa-bell"></i>
         <i className="cursor-pointer fa-solid fa-user"></i>
       </div>
       {/* mobile view search */}
-      <div className="w-full lg:flex">
-        <div className="flex justify-end">
+      <div className="block w-[100%] lg:hidden z-50">
+        <div className="flex  w-full justify-end">
           <input
             type="text"
+            ref={searchInputRef}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search"
             onKeyDown={(e) => {
-              if (e.key === "Enter") navigate(`/search-result/${searchQuery}`);
+              if (e.key === "Enter") {
+                navigate(`/search-result/${searchQuery}`);
+              }
             }}
-            onBlur={() => setTimeout(() => dispatch(toggleSearch()), 150)}
             onClick={() => dispatch(toggleSearch())}
             className="border-[1px] w-[70%] border-gray-400 rounded-l-md outline-none text-sm px-3 py-1"
           />
@@ -122,10 +145,10 @@ const Header = () => {
             <i className="fa fa-search"></i>
           </button>
         </div>
-        {isOpen && searchSuggestions.length !== 0 && (
+        {location.pathname === "/" && searchSuggestions?.length !== 0 && (
           <div className="shadow-lg fixed bg-white w-[100%] left-0 top-12 rounded-xl">
             <ul className="p-5 flex flex-col gap-3 ">
-              {searchSuggestions.map((suggestion, index) => (
+              {searchSuggestions?.map((suggestion, index) => (
                 <div
                   onClick={() => {
                     setSearchQuery(suggestion);
