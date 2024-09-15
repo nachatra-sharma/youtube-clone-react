@@ -17,7 +17,9 @@ const Comment = ({ channelID }) => {
 
   return (
     <div className="w-[70%]">
-      <h1 className="text-black text-2xl font-medium mt-20">Comments:</h1>
+      <h1 className="text-black text-2xl font-medium mt-7 lg:mt-20">
+        Comments:
+      </h1>
       {commentList?.map((comment) => {
         return <CommentCard commentData={comment}></CommentCard>;
       })}

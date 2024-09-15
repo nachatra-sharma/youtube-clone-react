@@ -36,7 +36,7 @@ const Header = () => {
   };
 
   return (
-    <div className="flex items-center w-[100%] px-5 py-1 bg-white fixed justify-between z-30">
+    <div className="flex items-center w-[100%] px-2 lg:px-5 py-1 bg-white fixed justify-between z-30">
       <div className="flex items-center gap-6">
         <div className="lg:block hidden">
           <i
@@ -45,7 +45,7 @@ const Header = () => {
           ></i>
         </div>
         <img
-          className="w-[100px] lg:w-32 cursor-pointer"
+          className="w-[150px] lg:w-32 cursor-pointer"
           src="https://t3.ftcdn.net/jpg/03/00/38/90/360_F_300389025_b5hgHpjDprTySl8loTqJRMipySb1rO0I.jpg"
           alt="youtube-logo"
         />
@@ -99,6 +99,49 @@ const Header = () => {
         <i className="cursor-pointer fa fa-video-camera"></i>
         <i className="cursor-pointer fa-solid fa-bell"></i>
         <i className="cursor-pointer fa-solid fa-user"></i>
+      </div>
+      {/* mobile view search */}
+      <div className="w-full lg:flex">
+        <div className="flex justify-end">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") navigate(`/search-result/${searchQuery}`);
+            }}
+            onBlur={() => setTimeout(() => dispatch(toggleSearch()), 150)}
+            onClick={() => dispatch(toggleSearch())}
+            className="border-[1px] w-[70%] border-gray-400 rounded-l-md outline-none text-sm px-3 py-1"
+          />
+          <button
+            className="border-[1px] border-gray-400 text-sm py-1 px-3 rounded-r-md bg-gray-200"
+            onClick={() => navigate(`/search-result/${searchQuery}`)}
+          >
+            <i className="fa fa-search"></i>
+          </button>
+        </div>
+        {isOpen && searchSuggestions.length !== 0 && (
+          <div className="shadow-lg fixed bg-white w-[100%] left-0 top-12 rounded-xl">
+            <ul className="p-5 flex flex-col gap-3 ">
+              {searchSuggestions.map((suggestion, index) => (
+                <div
+                  onClick={() => {
+                    setSearchQuery(suggestion);
+                    navigate(`/search-result/${suggestion}`);
+                  }}
+                  key={index}
+                >
+                  <div className="flex flex-row gap-3 items-center">
+                    <i className="fa fa-search"></i>
+                    <li>{suggestion}</li>
+                  </div>
+                </div>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

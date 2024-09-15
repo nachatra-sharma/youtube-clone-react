@@ -29,6 +29,20 @@ const SearchResult = () => {
     };
   });
 
+  function truncateString(str) {
+    if (str.length > 80) {
+      return str.slice(0, 80) + "...";
+    }
+    return str;
+  }
+
+  function truncateString2(str) {
+    if (str.length > 70) {
+      return str.slice(0, 70) + "...";
+    }
+    return str;
+  }
+
   const shimmerLength = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 11, 12];
 
   return (
@@ -43,10 +57,10 @@ const SearchResult = () => {
                 key={index}
                 to={`/watch?v=${index !== 0 && result?.id?.videoId}`}
               >
-                <div className="flex flex-row gap-5 w-[95%] mb-5">
+                <div className="flex flex-col lg:flex-row gap-2 lg:gap-5 w-[95%] mb-5">
                   <div>
                     <img
-                      className="rounded-md max-w-[400px]"
+                      className="rounded-md  max-w-[330px] lg:max-w-[400px]"
                       src={
                         index !== 0 && result?.snippet?.thumbnails?.high?.url
                       }
@@ -54,10 +68,10 @@ const SearchResult = () => {
                     />
                   </div>
                   <div>
-                    <h2 className="text-gray-800 font-normal text-lg tracking-wider">
+                    <h2 className="text-gray-800 font-normal text-sm lg:text-lg tracking-normal lg:tracking-wider">
                       {index !== 0 && result?.snippet?.title}
                     </h2>
-                    <div className="flex items-center gap-3 my-5">
+                    <div className="flex items-center gap-2 lg:gap-3 my-2 lg:my-5">
                       <img
                         src={searchResult[0]?.snippet?.thumbnails?.default?.url}
                         className="w-8 rounded-full"
@@ -66,8 +80,15 @@ const SearchResult = () => {
                         {searchResult[2]?.snippet?.channelTitle}
                       </span>
                     </div>
-                    <p className="text-gray-500 leading-8">
-                      {index !== 0 && result?.snippet?.description}
+                    <p className="text-gray-500 text-xs lg:text-lg leading-6 lg:leading-8">
+                      {/* {index !== 0 && result?.snippet?.description} */}
+                      {window.innerWidth > 800
+                        ? truncateString(
+                            index !== 0 && result?.snippet?.description
+                          )
+                        : truncateString2(
+                            index !== 0 && result?.snippet?.description
+                          )}
                     </p>
                   </div>
                 </div>

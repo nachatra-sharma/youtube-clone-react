@@ -24,7 +24,7 @@ const WatchPage = () => {
   const [searchParams] = useSearchParams();
 
   return (
-    <div>
+    <div className="flex flex-col">
       <VideoPlayer data={video} id={searchParams.get("v")} />
       <Comment channelID={searchParams.get("v")}></Comment>
     </div>

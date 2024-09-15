@@ -7,9 +7,8 @@ const VideoPlayer = (props) => {
       <iframe
         id="player"
         type="text/html"
-        className="lg:w-[1046px] lg:h-[600px] w-[381px] h-[200px]"
+        className="lg:w-[1046px] lg:h-[600px] w-[350px] h-[200px]"
         src={"http://www.youtube.com/embed/" + id}
-        frameBorder="0"
       ></iframe>
     </div>
   );
