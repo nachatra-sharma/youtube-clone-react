@@ -5,8 +5,6 @@ import { useDispatch } from "react-redux";
 import { closeSearch } from "../utils/appSlice";
 import ShimmerResult from "./ShimmerResult";
 
-console.log(process.env.GOOGLE_API_KEY);
-console.log(GOOGLE_API_KEY);
 const SearchResult = () => {
   const dispatch = useDispatch();
   const [searchResult, setSearchResult] = useState([]);
