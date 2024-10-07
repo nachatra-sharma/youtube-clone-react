@@ -7,7 +7,7 @@ const VideoPlayer = ({ id, data }) => {
         id="player"
         type="text/html"
         className="lg:w-[1046px] lg:h-[600px] w-full h-[250px]"
-        src={"http://www.youtube.com/embed/" + id}
+        src={"https://www.youtube.com/embed/" + id}
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       ></iframe>
